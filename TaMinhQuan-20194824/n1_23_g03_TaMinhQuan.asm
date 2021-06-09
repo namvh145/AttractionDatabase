@@ -1,3 +1,4 @@
+# Author: Ta Minh Quan -20194824
 # pseudo code:
 #   do{
 # 	char inputString[20];
@@ -129,7 +130,7 @@ IsValidString:
 # output: 	a1 	- length of the string
 # pseudo code:
 # length = 0
-# while(A[length]!='\0'){
+# while(A[length]!='\0' && A[length]!='\n'){
 #	length++;
 # }
 # return length;
@@ -160,6 +161,7 @@ FindLength:
 # pseudo code:
 # if(length == 0) return true;
 # if(length == 1) return true;
+# if(length == 2) return true;
 # int tmp = abs(str[1] - str[0]);
 # int previous = tmp;
 # for(int i=2;i<length;i++){
@@ -175,8 +177,8 @@ FindLength:
  	
 IsSurpassingWord:
 	beqz $a1, ReturnTrue		# length == 0 ?
-	li $t0, 1
 	beq $a1, 1, ReturnTrue		# length == a1 = 1 ? 
+	beq $a1, 2, ReturnTrue		# length == a1 = 2 ?
 	lb $t2, 0($a0)			# t2 = str[0]
 	lb $t3, 1($a0)			# t3 = str[1]
 	sub $t0, $t3, $t2		

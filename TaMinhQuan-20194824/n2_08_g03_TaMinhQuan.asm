@@ -1,3 +1,4 @@
+# Author: Ta Minh Quan - 20194824
 # pseudo code:
 # do{
 # 	char inputString[80];
@@ -56,6 +57,8 @@ OutInputLoop:
 # purpose: to check the input string is valid or not
 # input: 	a0 - length of the string
 # output:	a1 - valid string or not (1 is valid, 0 is invalid)
+# pseudo code:
+# if(length % 8 !=0) return false;
 # return true;
 
 IsValidString:
@@ -77,7 +80,7 @@ IsValidString:
 # output: 	a1 	- length of the string
 # pseudo code:
 # length = 0
-# while(A[length]!='\0'){
+# while(A[length]!='\0' && A[length]!='\n'){
 #	length++;
 # }
 # return length;
@@ -328,10 +331,10 @@ OutNormalLoop:
 # output: 	none
 # pseudo code:
 # printf("[[ ");
-# printf("%02x", str[0]);
+# printLastTwoByte(str[0]);
 # for(int i=1;i<4;i++){
 #	printf(",");
-#  	printf("%02x", str[i]);
+#  	printLastTwoByte(str[i]);
 # }
 # printf("]]");
 
@@ -383,6 +386,9 @@ OutPrintXorLoop:
 # purpose: print the last two byte 
 # input: 	a0 - xor's result string (xorString)
 # output:	none
+# pseudo code:
+# printf(lookupTable[xorString[1]]);
+# printf(lookupTable[xorString[0]]);
 # side effect: print last two byte of xor's result string
 printLastTwoByte:
 	addi $sp, $sp, -8					# reserves space for storing in $sp
