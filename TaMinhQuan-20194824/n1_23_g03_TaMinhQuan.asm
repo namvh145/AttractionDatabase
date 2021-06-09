@@ -36,13 +36,13 @@ inputLoop:
 	
 	# Find the length of string
 	jal FindLength
-	move $s1, $a1			# stores length of string into $s1
+	move $s1, $v0			# stores length of string into $s1
 	
 	# Check if the input string is valid or not
 	move $a0, $s0
 	move $a1, $s1
 	jal IsValidString
-	beq $a2, 1, OutInputLoop	# if valid then exit the loop
+	beq $v0, 1, OutInputLoop	# if valid then exit the loop
 	# else if invalid
 	li $v0, 4
 	la $a0, invalidInputPrompt
@@ -54,8 +54,8 @@ OutInputLoop:
 	move $a0, $s0			# pass input string argument
 	move $a1, $s1			# pass string's lenth argument
 	jal IsSurpassingWord
-	beqz $a2, IsFalse		# if a2 == 0 then jump to IsFalse
-		# else if a2 == 1
+	beqz $v0, IsFalse		# if v0 == 0 then jump to IsFalse
+		# else if v0 == 1
 		li $v0, 4
 		la $a0, isTruePrompt
 		syscall
@@ -77,7 +77,7 @@ OutInputLoop:
 # purpose: to check the input string is valid or not
 # input: 	a0 	- input string
 #		a1	- string's length
-# output: 	a2	- result (0 is false, 1 is true) 
+# output: 	v0	- result (0 is false, 1 is true) 
 # pseudo code:
 # for(int i=0;i<length;i++){
 #	if(('a'<=str[i] && str[i]<='z') || ('A'<= str[i] && str[i]<='Z')){
@@ -113,11 +113,11 @@ IsValidString:
 	j Valid
 	
 	Valid:
-	li $a2, 1
+	li $v0, 1
 	j ExitIsValid
 	
 	Invalid:
-	li $a2, 0
+	li $v0, 0
 	j ExitIsValid
 	
 	ExitIsValid:
@@ -127,7 +127,7 @@ IsValidString:
 # subprogram: FindLength
 # purpose: return the input string's length
 # input: 	a0 	- input string
-# output: 	a1 	- length of the string
+# output: 	v0 	- length of the string
 # pseudo code:
 # length = 0
 # while(A[length]!='\0' && A[length]!='\n'){
@@ -141,7 +141,7 @@ FindLength:
 	move $t0, $zero					# initalize length to 0 
 	FindLengthLoop:	
 		lb $t1, 0($a0)				# load the next character into $t1
-		beqz $t1, ExitFindLengthLoop		# check for null terminator
+		beqz $t1, ExitFindLengthLoop		# check for \0
 		beq $t1, 0xa, ExitFindLengthLoop	# check for \n 
 		addi $a0, $a0, 1			# increment string pointer
 		addi $t0, $t0, 1			# increment the length
@@ -149,7 +149,7 @@ FindLength:
 	ExitFindLengthLoop:
 	lw $a0, 0($sp)					# restores the address of a0 
 	addi $sp, $sp, 4				# restores the $sp
-	move $a1, $t0					# stores length of string into a1
+	move $v0, $t0					# stores length of string into v0
 	jr $ra						# return 
 				
 
@@ -157,7 +157,7 @@ FindLength:
 # purpose: to check the input string is surpassing or not
 # input:	a0 	- input string
 # 		a1	- string's length
-# output: 	a2 	- result (0 is false, 1 is true)
+# output: 	v0 	- result (0 is false, 1 is true)
 # pseudo code:
 # if(length == 0) return true;
 # if(length == 1) return true;
@@ -203,11 +203,11 @@ IsSurpassingWord:
 	j ReturnTrue
 	
 	ReturnTrue:
-	li $a2, 1
+	li $v0, 1
 	j ExitIsSurpassing
 	
 	ReturnFalse:
-	li $a2, 0
+	li $v0, 0
 	j ExitIsSurpassing
 	
 	ExitIsSurpassing:

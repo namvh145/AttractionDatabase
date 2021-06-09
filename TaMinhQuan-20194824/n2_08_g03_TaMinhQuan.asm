@@ -32,12 +32,12 @@ inputLoop:
 	
 	# Find the length of string
 	jal FindLength
-	move $s1, $a1			# stores length of string into $s1
+	move $s1, $v0			# stores length of string into $s1
 	
 	# Check if the input string is valid or not
 	move $a0, $s1
 	jal IsValidString
-	beq $a1, 1, OutInputLoop	# if valid then exit the loop
+	beq $v0, 1, OutInputLoop	# if valid then exit the loop
 	# else if invalid
 	li $v0, 4
 	la $a0, invalidStringPrompt
@@ -56,7 +56,7 @@ OutInputLoop:
 # subprogram: IsValidString
 # purpose: to check the input string is valid or not
 # input: 	a0 - length of the string
-# output:	a1 - valid string or not (1 is valid, 0 is invalid)
+# output:	v0 - valid string or not (1 is valid, 0 is invalid)
 # pseudo code:
 # if(length % 8 !=0) return false;
 # return true;
@@ -65,10 +65,10 @@ IsValidString:
 	rem $t0, $a0, 8
 	beqz $t0, isValid				# if length % 8 == 0, then valid
 		# else if length % 8 != 0	
-		li $a1, 0				# return false
+		li $v0, 0				# return false
 		j ExitIsValid			
 	isValid:
-	li $a1, 1					# return true
+	li $v0, 1					# return true
 	j ExitIsValid
 
 	ExitIsValid:
@@ -77,7 +77,7 @@ IsValidString:
 # subprogram: FindLength
 # purpose: return the input string's length
 # input: 	a0 	- input string
-# output: 	a1 	- length of the string
+# output: 	v0 	- length of the string
 # pseudo code:
 # length = 0
 # while(A[length]!='\0' && A[length]!='\n'){
@@ -91,7 +91,7 @@ FindLength:
 	move $t0, $zero					# initalize length to 0 
 	FindLengthLoop:	
 		lb $t1, 0($a0)				# load the next character into $t1
-		beqz $t1, ExitFindLengthLoop		# check for null terminator
+		beqz $t1, ExitFindLengthLoop		# check for \0
 		beq $t1, 0xa, ExitFindLengthLoop	# check for \n 
 		addi $a0, $a0, 1			# increment string pointer
 		addi $t0, $t0, 1			# increment the length
@@ -99,7 +99,7 @@ FindLength:
 	ExitFindLengthLoop:
 	lw $a0, 0($sp)					# restores the address of a0 
 	addi $sp, $sp, 4				# restores the $sp
-	move $a1, $t0					# stores length of string into a1
+	move $v0, $t0					# stores length of string into v0
 	jr $ra						# return 
 	
 # subprogram: SimulateRaid5
